@@ -4,4 +4,4 @@ Hugo Lefebvre
 
 Tommy Arias
 
-server
+api
