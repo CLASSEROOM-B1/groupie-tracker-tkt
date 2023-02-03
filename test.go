@@ -14,13 +14,15 @@ type Artiste struct {
 }
 
 type Detail struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
+	Id           int      `json:"id"`
+	Image        string   `json:"image"`
+	Name         string   `json:"name"`
+	Members      []string `json:"members"`
+	CreationDate int      `json:"creationDate"`
+	FirstAlbum   string   `json:"firstAlbum"`
 }
 
 func test() {
-
-	var Details []string
 
 	url, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
@@ -30,14 +32,13 @@ func test() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	json.Unmarshal(Arstiste_json, Details)
 
 	var m []Detail
 	if err := json.Unmarshal([]byte(Arstiste_json), &m); err != nil {
 		panic(err)
 	}
 	for _, val := range m {
-		fmt.Println(val.Id, val.Name)
+		fmt.Println(val.Id, val.Image, val.Name, val.Members, val.CreationDate, val.FirstAlbum)
 	}
 
 }
