@@ -1,0 +1,30 @@
+.title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    margin: 0 0 1em 0;
+}
+
+
+
+.background{
+    position: relative;
+    background-color: #161A1D;
+    height: 900px;
+    width: 2000px;
+    left: -15px;
+}
+
+.bg{
+    position: relative;
+    background-color: #212529;
+    height: 900px;
+    width: 2000px;
+    left: -15px;
+}
+
+
+h1{
+    color: red;
+}
