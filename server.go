@@ -1,93 +1,88 @@
-// package main
+package main
 
-// import (
-// 	"encoding/json"
-// 	"fmt"
-// 	"io/ioutil"
-// 	"log"
-// 	"net/http"
-// 	"os"
-// 	"text/template"
-// )
+import (
+	"groupie/groupie"
+	"log"
+	"net/http"
+	"text/template"
+)
 
-// type Album struct {
-// 	Title  string
-// 	Genres Genres
-// }
-// type Genres struct {
-// 	Data Tabdata
-// }
-// type Tabdata []struct {
-// 	Id int
-// }
-// type Artiste struct {
-// 	Id             int
-// 	Name           string
-// 	Link           string
-// 	Share          string
-// 	Picture        string
-// 	Picture_small  string
-// 	Picture_medium string
-// 	Picture_big    string
-// 	Picture_xl     string
-// 	Nb_album       int
-// 	Nb_fan         int
-// 	Radio          bool
-// 	Tdracklist     string
-// }
+type Detail struct {
+	Id           int      `json:"id"`
+	Image        string   `json:"image"`
+	Name         string   `json:"name"`
+	Members      []string `json:"members"`
+	CreationDate int      `json:"creationDate"`
+	FirstAlbum   string   `json:"firstAlbum"`
+}
 
-// type Variable struct { //structure pour le hangman
-// 	Entrer string
-// }
+type DetailLocation struct {
+	Id        int      `json:"id"`
+	Locations []string `json:"location"`
+}
 
-// func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, Artiste *Artiste) { //page d'acceuil
-// 	template, err := template.ParseFiles("./index.html", "templates/test.html", "templates/forms.html")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	template.Execute(w, Artiste)
-// }
+type Date struct {
+	Id    int      `json:"id"`
+	Dates []string `json:"dates"`
+}
 
-// func api(Artiste *Artiste, Variable *Variable) {
-// 	url, err := http.Get("https://api.deezer.com/artist/" + Variable.Entrer)
-// 	if err != nil {
-// 		os.Exit(1)
-// 	}
-// 	Arstiste_json, err := ioutil.ReadAll(url.Body)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	fmt.Printf(string(Arstiste_json))
-// 	json.Unmarshal(Arstiste_json, Artiste)
-// }
+type Variable struct { //structure pour le hangman
+	Entrer string
+}
 
-// func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Artiste *Artiste) { // page de l'entrée utilisateur
-// 	tmpl := template.Must(template.ParseFiles("./templates/forms.html"))
-// 	if r.Method != http.MethodPost {
-// 		tmpl.Execute(w, nil)
-// 		return
-// 	}
-// 	a := r.FormValue("entrer")
-// 	if len(a) > 0 {
-// 		Variable.Entrer = a
-// 		api(Artiste, Variable)
-// 	}
-// 	tmpl.Execute(w, struct{ Success bool }{true})
+func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *Detail) { //page d'acceuil
+	template, err := template.ParseFiles("./index.html", "templates/test.html", "templates/forms.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	template.Execute(w, Detail)
+}
 
-// }
+func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *Detail, DetailLocation *DetailLocation) { // page de l'entrée utilisateur
+	tmpl := template.Must(template.ParseFiles("./templates/forms.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, nil)
+		return
+	}
+	a := r.FormValue("entrer")
+	if len(a) > 0 {
+		Variable.Entrer = a
+		temp := groupie.Api(a)
 
-// func main() { // fonction main
+		Detail.Id = temp.Id
+		Detail.Image = temp.Image
+		Detail.Name = temp.Name
+		Detail.Members = temp.Members
+		Detail.CreationDate = temp.CreationDate
+		Detail.FirstAlbum = temp.FirstAlbum
 
-// 	var Artiste *Artiste = &Artiste{}
-// 	var Variable *Variable = new(Variable)
+		tempLocation := groupie.ApiLocation(Detail.Id)
 
-// 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-// 		User(w, r, Variable, Artiste)
-// 		Home(w, r, Variable, Artiste)
-// 	})
-// 	fs := http.FileServer(http.Dir("./static/"))
-// 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-// 	fi := http.FileServer(http.Dir("./hangman/assets/"))
-// 	http.Handle("/hangman/assets/", http.StripPrefix("/hangman/assets/", fi))
-// 	http.ListenAndServe(":8000", nil)
-// }
+		DetailLocation.Id = tempLocation.Id
+		DetailLocation.Locations = tempLocation.Locations
+
+		tempDate := groupie.ApiDate(Detail.Id)
+
+		DetailLocation.Id = tempDate.Id
+		DetailLocation.Locations = tempDate.Dates
+
+	}
+	tmpl.Execute(w, struct{ Success bool }{true})
+
+}
+
+func main() { // fonction main
+	var Variable *Variable = new(Variable)
+	var Detail *Detail = new(Detail)
+	var DetailLocation *DetailLocation = new(DetailLocation)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
+		User(w, r, Variable, Detail, DetailLocation)
+		Home(w, r, Variable, Detail)
+	})
+	fs := http.FileServer(http.Dir("./static/"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	fi := http.FileServer(http.Dir("./hangman/assets/"))
+	http.Handle("/hangman/assets/", http.StripPrefix("/hangman/assets/", fi))
+	http.ListenAndServe(":8000", nil)
+}
