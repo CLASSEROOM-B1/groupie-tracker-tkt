@@ -1,6 +1,12 @@
 {{define "Test"}} <!-- Pour la lecture utilisateur -->
-<div class="user">
-        <h1>{{.Name}}</h1>
-        <img src={{.Image}}>
+<div class ="all">
+
+        <ol>
+                {{range .}}
+                        <li>{{.Name}}</li>
+                        <img src={{.Image}}>
+                 {{end}}
+        </ol>
+
 </div>
 {{end}}

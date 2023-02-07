@@ -7,8 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
-	"strings"
 )
 
 type Detail struct {
@@ -20,9 +18,7 @@ type Detail struct {
 	FirstAlbum   string   `json:"firstAlbum"`
 }
 
-func Api(a string) *Detail {
-
-	var Details *Detail = new(Detail)
+func AllARtiste() []Detail {
 
 	url, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
@@ -38,44 +34,7 @@ func Api(a string) *Detail {
 		panic(err)
 	}
 
-	Recherche(a, m, Details)
+	fmt.Println(len(m))
 
-	return (Details)
-}
-
-func Recherche(userInput string, m []Detail, Detail *Detail) {
-
-	id := 0
-	boucle := false
-
-	userInput = strings.ToLower(userInput)
-	userInput = strings.Title(userInput)
-
-	for _, val := range m {
-		if val.Name == userInput {
-			id = val.Id
-			boucle = true
-		}
-	}
-
-	if boucle == true {
-
-		id_string := strconv.Itoa(id)
-
-		test := "https://groupietrackers.herokuapp.com/api/artists/" + id_string
-
-		url, err := http.Get(test)
-		if err != nil {
-			os.Exit(1)
-		}
-		Arstiste_json, err := ioutil.ReadAll(url.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		json.Unmarshal(Arstiste_json, Detail)
-		fmt.Println(Detail.Name)
-
-	}
-
+	return m
 }
