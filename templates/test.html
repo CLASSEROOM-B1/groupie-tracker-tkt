@@ -4,7 +4,10 @@
         <ol>
                 {{range .}}
                         <li>{{.Name}}</li>
-                        <img src={{.Image}}>
+                        <form method="POST">
+                                <input type="hidden" value={{.Id}} name="artisteImage">
+                                <input type="image" src={{.Image}} name="artisteTest">
+                        </form>
                  {{end}}
         </ol>
 

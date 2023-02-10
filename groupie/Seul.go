@@ -2,6 +2,7 @@ package groupie
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -19,7 +20,7 @@ type DetailSimple struct {
 	FirstAlbum   string   `json:"firstAlbum"`
 }
 
-func Api(a string) DetailSimple {
+func Api(a string, choix int, id int) DetailSimple {
 
 	var DetailSimple *DetailSimple = new(DetailSimple)
 
@@ -37,7 +38,12 @@ func Api(a string) DetailSimple {
 		panic(err)
 	}
 
-	Recherche(a, m, DetailSimple)
+	if choix == 0 {
+		Recherche(a, m, DetailSimple)
+	} else if choix == 1 {
+		fmt.Println("test choix")
+		RechercheImage(id, m, DetailSimple)
+	}
 
 	return *DetailSimple
 }
@@ -74,5 +80,24 @@ func Recherche(userInput string, m []Detail, DetailSimple *DetailSimple) {
 
 		json.Unmarshal(Arstiste_json, DetailSimple)
 	}
+
+}
+
+func RechercheImage(id int, m []Detail, DetailSimple *DetailSimple) {
+
+	id_string := strconv.Itoa(id)
+
+	test := "https://groupietrackers.herokuapp.com/api/artists/" + id_string
+
+	url, err := http.Get(test)
+	if err != nil {
+		os.Exit(1)
+	}
+	Arstiste_json, err := ioutil.ReadAll(url.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	json.Unmarshal(Arstiste_json, DetailSimple)
 
 }
