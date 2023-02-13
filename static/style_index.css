@@ -1,19 +1,13 @@
-.title {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #000;
-    text-align: center;
-    margin: 0 0 1em 0;
+*{
+    margin: 0px;
+    padding: 0px;
 }
-
-
 
 .background{
     position: relative;
     background-color: #161A1D;
     height: 900px;
     width: 2000px;
-    left: -15px;
 }
 
 .bg{
@@ -21,10 +15,51 @@
     background-color: #212529;
     height: 900px;
     width: 2000px;
-    left: -15px;
+    top: -10;
 }
 
+form{
+    position: absolute;
+    left: 700px;
+    top: 450px;
+}
 
-h1{
-    color: red;
+input{
+    border-radius: 30px;
+    width: 600px;
+    height: 30px;
+}
+
+a{
+    color: white;
+}
+
+.user {
+    color: #000;
+  }
+
+.button{
+    position: absolute;
+    left: 700px;
+    width: 100px;
+    height: 100px;
+    filter: blur(10px);
+}
+
+.button:hover{
+    color: pink;
+}
+
+button:active::after{
+    animation: fadein 2s;
+    background-color: blue;
+}
+
+@keyframes fadein {
+    from {
+        filter: blur(10px);
+    }
+    to {
+        filter: blur(0px);
+    }
 }
