@@ -1,4 +1,5 @@
 *{
+    font-family: 'Poppins', sans-serif;
     margin: 0px;
     padding: 0px;
 
@@ -22,4 +23,20 @@
 }
 .seul{
     color:white;
+}
+
+.image{
+    width: 270px;
+    height: 270px;
+    margin: 0px;
+    padding-left: 825px;
+    padding-top: 215px;
+}
+
+.nom{
+    display: flex;
+    justify-content: center;
+    font-size: 60px;
+    text-align: center;
+    margin: auto;
 }
