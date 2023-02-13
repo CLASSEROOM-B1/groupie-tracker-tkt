@@ -5,14 +5,20 @@
 }
 
 .background{
-height: 100%;
+    height: 100%;
+    width: 100%;
     background-color: #212529;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .container{
-    position: relative;
-    color: #161A1D;
+    position: absolute;
+    background-color: #161A1D;
     width:100%;
+    height: 70%;
+    z-index: 100;
 }
 .seul{
     color:white;
