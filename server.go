@@ -34,7 +34,7 @@ func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimp
 }
 
 func Artiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimple *groupie.DetailSimple) { //page d'acceuil
-	template, err := template.ParseFiles("./pages/artiste.html", "templates/seul.html")
+	template, err := template.ParseFiles("./pages/artiste.html", "templates/seul.html", "templates/basdepage.html")
 	if err != nil {
 		log.Fatal(err)
 	}

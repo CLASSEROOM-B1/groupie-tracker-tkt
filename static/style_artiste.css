@@ -2,7 +2,6 @@
     font-family: 'Poppins', sans-serif;
     margin: 0px;
     padding: 0px;
-
 }
 
 .background{
@@ -10,33 +9,41 @@
     width: 100%;
     background-color: #212529;
     position: absolute;
+    display: flex;
+    flex-direction: column;
     top: 0;
     left: 0;
 }
 
 .container{
-    position: absolute;
+    display: flex;
     background-color: #161A1D;
     width:100%;
     height: 70%;
-    z-index: 100;
 }
-.seul{
-    color:white;
+.imageDiv {
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .image{
     width: 270px;
     height: 270px;
-    margin: 0px;
-    padding-left: 825px;
-    padding-top: 215px;
 }
 
-.nom{
+.stat {
     display: flex;
+    color: white;
+    align-items: center;
     justify-content: center;
-    font-size: 60px;
-    text-align: center;
-    margin: auto;
+}
+
+.nomDiv{
+
+}
+.nom{
+
+    font-size: 10vh;
 }
