@@ -2,7 +2,6 @@ package groupie
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -41,7 +40,6 @@ func Api(a string, choix int, id int) DetailSimple {
 	if choix == 0 {
 		Recherche(a, m, DetailSimple)
 	} else if choix == 1 {
-		fmt.Println("test choix")
 		RechercheImage(id, m, DetailSimple)
 	}
 

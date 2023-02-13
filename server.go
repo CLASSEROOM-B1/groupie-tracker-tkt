@@ -49,7 +49,7 @@ func AllArtise(w http.ResponseWriter, r *http.Request, Variable *Variable, Detai
 	template.Execute(w, Detail)
 }
 
-func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail, DetailLocation *DetailLocation, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, int) { // page de l'entrée utilisateur
+func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, int) { // page de l'entrée utilisateur
 	tmpl := template.Must(template.ParseFiles("./templates/forms.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, nil)
@@ -61,17 +61,20 @@ func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]
 		Variable.Entrer = a
 		DetailSimple = groupie.Api(a, 0, 0)
 		choix = 1
-		fmt.Println(DetailSimple.Name)
 
-		// tempLocation := groupie.ApiLocation(groupie.Id)
+		tempLocation := groupie.ApiLocation(DetailSimple.Id)
 
-		// DetailLocation.Id = tempLocation.Id
-		// DetailLocation.Locations = tempLocation.Locations
+		DetailLocation.Id = tempLocation.Id
+		DetailLocation.Locations = tempLocation.Locations
 
-		// tempDate := groupie.ApiDate(DetailSimple.Id)
+		fmt.Println(DetailLocation.Locations[0])
 
-		// DetailLocation.Id = tempDate.Id
-		// DetailLocation.Locations = tempDate.Dates
+		tempDate := groupie.ApiDate(DetailSimple.Id)
+
+		Date.Id = tempDate.Id
+		Date.Dates = tempDate.Dates
+
+		fmt.Println(Date.Dates[0])
 
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
@@ -80,7 +83,7 @@ func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]
 
 }
 
-func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, int) { // page de l'entrée utilisateur
+func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, int) { // page de l'entrée utilisateur
 	tmpl := template.Must(template.ParseFiles("./templates/test.html"))
 	b := 0
 	if r.Method != http.MethodPost {
@@ -90,12 +93,24 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 	a := r.FormValue("artisteImage")
 	b, _ = strconv.Atoi(a)
 	if b > 0 {
-		fmt.Println(b)
 		Variable.image = b
 		DetailSimple = groupie.Api(a, 1, b)
-		fmt.Println(DetailSimple.Name)
 		choix = 1
 		b = 0
+
+		tempLocation := groupie.ApiLocation(DetailSimple.Id)
+
+		DetailLocation.Id = tempLocation.Id
+		DetailLocation.Locations = tempLocation.Locations
+
+		fmt.Println(DetailLocation.Locations[0])
+
+		tempDate := groupie.ApiDate(DetailSimple.Id)
+
+		Date.Id = tempDate.Id
+		Date.Dates = tempDate.Dates
+
+		fmt.Println(Date.Dates[0])
 
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
@@ -106,6 +121,7 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 func main() { // fonction main
 	var Variable *Variable = new(Variable)
 	var DetailLocation *DetailLocation = new(DetailLocation)
+	var Date *Date = new(Date)
 
 	Detail := groupie.AllARtiste()
 	DetailSimple := groupie.Api(Variable.Entrer, 0, 0)
@@ -113,18 +129,16 @@ func main() { // fonction main
 	choix2 := 0
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-		DetailSimple, choix = User(w, r, Variable, &Detail, DetailLocation, DetailSimple)
+		DetailSimple, choix = User(w, r, Variable, &Detail, DetailLocation, Date, DetailSimple)
 		if choix == 1 {
-			fmt.Println("test")
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
 		Home(w, r, Variable, &DetailSimple)
 	})
 
 	http.HandleFunc("/AllArtiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-		DetailSimple, choix2 = ImageArtiste(w, r, Variable, DetailSimple)
+		DetailSimple, choix2 = ImageArtiste(w, r, Variable, DetailLocation, Date, DetailSimple)
 		if choix2 == 1 {
-			fmt.Println("test2")
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
 		AllArtise(w, r, Variable, &Detail)

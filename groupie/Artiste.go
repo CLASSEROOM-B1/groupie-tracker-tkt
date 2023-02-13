@@ -2,7 +2,6 @@ package groupie
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -33,8 +32,5 @@ func AllARtiste() []Detail {
 	if err := json.Unmarshal([]byte(Arstiste_json), &m); err != nil {
 		panic(err)
 	}
-
-	fmt.Println(len(m))
-
 	return m
 }

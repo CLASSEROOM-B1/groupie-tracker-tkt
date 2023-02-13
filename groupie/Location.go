@@ -2,7 +2,6 @@ package groupie
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -54,6 +53,4 @@ func test(vide *vide, Detailss *DetailLocation, id int) {
 		log.Fatal(err)
 	}
 	json.Unmarshal(Arstiste_json, Detailss)
-
-	fmt.Println(Detailss.Locations)
 }
