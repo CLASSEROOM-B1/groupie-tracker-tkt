@@ -1,0 +1,11 @@
+.title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    margin: 0 0 1em 0;
+}
+
+.user {
+    color: #000;
+  }

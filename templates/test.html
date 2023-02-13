@@ -1,0 +1,15 @@
+{{define "Test"}} <!-- Pour la lecture utilisateur -->
+<div class ="all">
+
+        <ol>
+                {{range .}}
+                        <li>{{.Name}}</li>
+                        <form method="POST">
+                                <input type="hidden" value={{.Id}} name="artisteImage">
+                                <input type="image" src={{.Image}} name="artisteTest">
+                        </form>
+                 {{end}}
+        </ol>
+
+</div>
+{{end}}
