@@ -1,0 +1,19 @@
+*{
+    margin: 0px;
+    padding: 0px;
+
+}
+
+.background{
+height: 100%;
+    background-color: #212529;
+}
+
+.container{
+    position: relative;
+    color: #161A1D;
+    width:100%;
+}
+.seul{
+    color:white;
+}
