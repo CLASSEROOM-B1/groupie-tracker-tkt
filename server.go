@@ -112,6 +112,24 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 		DetailFull = DetailTest
 	}
 
+	dateString := r.FormValue("date")
+	date, _ := strconv.Atoi(dateString)
+
+	if date > 0 {
+
+		for i := 0; i < len(Detail); i++ {
+			for y := date; y < date+10; y++ {
+				if Detail[i].CreationDate == y {
+					fmt.Println((Detail)[i].Name)
+					DetailTest = append(DetailTest, (Detail)[i])
+				}
+			}
+		}
+		//fmt.Println(Detail)
+		fmt.Println(len(DetailTest))
+		DetailFull = DetailTest
+	}
+
 	choix := 0
 	a := r.FormValue("artisteImage")
 	b, _ = strconv.Atoi(a)
