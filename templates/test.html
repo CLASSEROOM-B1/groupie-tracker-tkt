@@ -1,4 +1,48 @@
 {{define "Test"}} <!-- Pour la lecture utilisateur -->
+<div class="checkbox">
+        <form method="POST">
+<fieldset>
+        <legend>Filtres :</legend>
+        <div class="membres">
+                <label>Membres du groupe : </br></label>
+                        <input type="range" name="member" value="0" min="0" max="10"oninput="this.nextElementSibling.value = this.value">
+                        <output></output>
+                        
+                <output></output>
+              </div>
+        <div class="date">
+                <label>Date premiere album : </br></label>
+                <input type="range" value="1900" min="1900" max="2023"oninput="this.nextElementSibling.value = this.value">
+                <output></output>
+              </div>
+        <div class="location">
+                <legend>Concert :</legend>
+                <div>
+                        <input type="checkbox" name="europe">
+                        <label for="scales">Europe</label>
+                      </div>
+                  
+                      <div>
+                        <input type="checkbox" id="amerique" name="amerique">
+                        <label for="horns">Amerique </label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="asie" name="asie">
+                        <label for="scales">Asie</label>
+                      </div>
+                  
+                      <div>
+                        <input type="checkbox" id="afrique" name="afrique">
+                        <label for="horns">Afrique</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" id="oceanie" name="oceanie">
+                        <label for="scales">Oceanie</label>
+                      </div>
+                <input type="submit" value="Rechercher">
+                </form>
+    </fieldset>
+</div>    
 <div class ="all">
 
         <ol>

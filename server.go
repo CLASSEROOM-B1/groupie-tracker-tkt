@@ -34,7 +34,7 @@ func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimp
 }
 
 func Artiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimple *groupie.DetailSimple) { //page d'acceuil
-	template, err := template.ParseFiles("./pages/artiste.html", "templates/seul.html")
+	template, err := template.ParseFiles("./pages/artiste.html", "templates/seul.html", "templates/basdepage.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -83,15 +83,39 @@ func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]
 
 }
 
-func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, int) { // page de l'entrée utilisateur
+func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail []groupie.Detail, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple, lenDetail int) ([]groupie.Detail, groupie.DetailSimple, int) { // page de l'entrée utilisateur
 	tmpl := template.Must(template.ParseFiles("./templates/test.html"))
 	b := 0
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, nil)
 	}
+
+	Detail = groupie.AllARtiste()
+
+	DetailFull := Detail
+	var DetailTest []groupie.Detail
+
+	memberString := r.FormValue("member")
+	member, _ := strconv.Atoi(memberString)
+
+	if member > 0 {
+
+		for i := 0; i < len(Detail); i++ {
+			if len((Detail)[i].Members) == member {
+				fmt.Println((Detail)[i].Name)
+				DetailTest = append(DetailTest, (Detail)[i])
+
+			}
+		}
+		//fmt.Println(Detail)
+		fmt.Println(len(DetailTest))
+		DetailFull = DetailTest
+	}
+
 	choix := 0
 	a := r.FormValue("artisteImage")
 	b, _ = strconv.Atoi(a)
+
 	if b > 0 {
 		Variable.image = b
 		DetailSimple = groupie.Api(a, 1, b)
@@ -115,7 +139,7 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
 
-	return DetailSimple, choix
+	return DetailFull, DetailSimple, choix
 }
 
 func main() { // fonction main
@@ -127,6 +151,7 @@ func main() { // fonction main
 	DetailSimple := groupie.Api(Variable.Entrer, 0, 0)
 	choix := 0
 	choix2 := 0
+	lenDetail := len(Detail)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
 		DetailSimple, choix = User(w, r, Variable, &Detail, DetailLocation, Date, DetailSimple)
@@ -137,7 +162,7 @@ func main() { // fonction main
 	})
 
 	http.HandleFunc("/AllArtiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-		DetailSimple, choix2 = ImageArtiste(w, r, Variable, DetailLocation, Date, DetailSimple)
+		Detail, DetailSimple, choix2 = ImageArtiste(w, r, Variable, Detail, DetailLocation, Date, DetailSimple, lenDetail)
 		if choix2 == 1 {
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
