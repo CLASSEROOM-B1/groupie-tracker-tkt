@@ -49,7 +49,21 @@ func AllArtise(w http.ResponseWriter, r *http.Request, Variable *Variable, Detai
 	template.Execute(w, Detail)
 }
 
-func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, int) { // page de l'entrée utilisateur
+func Map(w http.ResponseWriter, r *http.Request, Variable *Variable, loc string) { //page d'acceuil
+
+	fmt.Println(loc)
+
+	templ, err := template.ParseFiles("./pages/map.html")
+	if err != nil {
+		fmt.Println("Error = ", err)
+	}
+	err = templ.Execute(w, loc)
+	if err != nil {
+		fmt.Println("Error = ", err)
+	}
+}
+
+func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, *DetailLocation, int) { // page de l'entrée utilisateur
 	tmpl := template.Must(template.ParseFiles("./templates/forms.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, nil)
@@ -67,19 +81,15 @@ func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]
 		DetailLocation.Id = tempLocation.Id
 		DetailLocation.Locations = tempLocation.Locations
 
-		fmt.Println(DetailLocation.Locations[0])
-
 		tempDate := groupie.ApiDate(DetailSimple.Id)
 
 		Date.Id = tempDate.Id
 		Date.Dates = tempDate.Dates
 
-		fmt.Println(Date.Dates[0])
-
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
 
-	return DetailSimple, choix
+	return DetailSimple, DetailLocation, choix
 
 }
 
@@ -98,12 +108,8 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 	memberString := r.FormValue("member")
 	member, _ := strconv.Atoi(memberString)
 
-	fmt.Println(member)
-
 	dateString := r.FormValue("date")
 	date, _ := strconv.Atoi(dateString)
-
-	fmt.Println(date)
 
 	albumString := r.FormValue("album")
 	album, _ := strconv.Atoi(albumString)
@@ -125,14 +131,10 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 		DetailLocation.Id = tempLocation.Id
 		DetailLocation.Locations = tempLocation.Locations
 
-		fmt.Println(DetailLocation.Locations[0])
-
 		tempDate := groupie.ApiDate(DetailSimple.Id)
 
 		Date.Id = tempDate.Id
 		Date.Dates = tempDate.Dates
-
-		fmt.Println(Date.Dates[0])
 
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
@@ -151,8 +153,10 @@ func main() { // fonction main
 	choix2 := 0
 	lenDetail := len(Detail)
 
+	var loc string
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-		DetailSimple, choix = User(w, r, Variable, &Detail, DetailLocation, Date, DetailSimple)
+		DetailSimple, DetailLocation, choix = User(w, r, Variable, &Detail, DetailLocation, Date, DetailSimple)
 		if choix == 1 {
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
@@ -169,6 +173,12 @@ func main() { // fonction main
 
 	http.HandleFunc("/artiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
 		Artiste(w, r, Variable, &DetailSimple)
+
+	})
+
+	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
+		loc = groupie.Cord(DetailLocation.Locations)
+		Map(w, r, Variable, loc)
 
 	})
 
