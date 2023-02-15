@@ -98,37 +98,17 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 	memberString := r.FormValue("member")
 	member, _ := strconv.Atoi(memberString)
 
-	if member > 0 {
-
-		for i := 0; i < len(Detail); i++ {
-			if len((Detail)[i].Members) == member {
-				fmt.Println((Detail)[i].Name)
-				DetailTest = append(DetailTest, (Detail)[i])
-
-			}
-		}
-		//fmt.Println(Detail)
-		fmt.Println(len(DetailTest))
-		DetailFull = DetailTest
-	}
+	fmt.Println(member)
 
 	dateString := r.FormValue("date")
 	date, _ := strconv.Atoi(dateString)
 
-	if date > 0 {
+	fmt.Println(date)
 
-		for i := 0; i < len(Detail); i++ {
-			for y := date; y < date+10; y++ {
-				if Detail[i].CreationDate == y {
-					fmt.Println((Detail)[i].Name)
-					DetailTest = append(DetailTest, (Detail)[i])
-				}
-			}
-		}
-		//fmt.Println(Detail)
-		fmt.Println(len(DetailTest))
-		DetailFull = DetailTest
-	}
+	albumString := r.FormValue("album")
+	album, _ := strconv.Atoi(albumString)
+
+	DetailFull = groupie.Filtre(Detail, DetailFull, DetailTest, member, date, album)
 
 	choix := 0
 	a := r.FormValue("artisteImage")

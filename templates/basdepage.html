@@ -1,7 +1,6 @@
 {{define "Basdepage"}}
-<div class ="seul">
-    <a>{{.Name}}<br></a>
-    <a>{{.Members}}<br></a>
-    <a>{{.CreationDate}}<br></a>
-    <a>{{.FirstAlbum}}<br></a>
+    <a class="nom">{{.Name}}<br></a>
+    <span>Membres :<a class="membres">{{.Members}}</a></span>
+    <span>Création :<br><a class="creationDate">{{.CreationDate}}<br></a></span>
+    <span>Premier album :<br><a class="premierAlbum">{{.FirstAlbum}}<br></a></span></div>
 {{end}}
