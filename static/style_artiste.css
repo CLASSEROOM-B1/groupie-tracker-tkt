@@ -34,16 +34,19 @@
 }
 
 .stat {
-    display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
-}
-
-.nomDiv{
 
 }
+
 .nom{
-
     font-size: 10vh;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.membres{
+    font-size: 2vh;
+    display: flex;
+    
 }
