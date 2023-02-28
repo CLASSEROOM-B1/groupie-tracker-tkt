@@ -19,8 +19,8 @@ type Results struct {
 }
 
 type Geometry struct {
-	Lat float64
-	Lng float64
+	Lat float32
+	Lng float32
 }
 
 func Cord(location []string) string {
@@ -29,16 +29,13 @@ func Cord(location []string) string {
 
 	var Data *Data = new(Data)
 
-	var locLat []float64
-	var locLng []float64
+	var locLat []float32
+	var locLng []float32
 
 	var loc string
 
-	fmt.Println(location)
-
 	for i := 0; i < len(location); i++ {
 		split := strings.Split(location[i], "-")
-		fmt.Println(split[0])
 		var test string = "https://api.opencagedata.com/geocode/v1/json?q=" + split[0] + "&key=735c71b1c2694ef383ee59af8349e696"
 		url, err := http.Get(test)
 		if err != nil {
@@ -50,13 +47,8 @@ func Cord(location []string) string {
 		}
 		json.Unmarshal(Arstiste_json, Data)
 		DataLoc = append(DataLoc, *Data)
-	}
-	// fmt.Println(DataLoc[4].Results[0].Geometry.Lat)
-	// fmt.Println(DataLoc[4].Results[0].Geometry.Lng)
-
-	for i := 0; i < len(DataLoc); i++ {
-		locLat = append(locLat, DataLoc[0].Results[i].Geometry.Lat)
-		locLng = append(locLng, DataLoc[0].Results[i].Geometry.Lng)
+		locLat = append(locLat, DataLoc[i].Results[0].Geometry.Lat)
+		locLng = append(locLng, DataLoc[i].Results[0].Geometry.Lng)
 	}
 
 	for i := 0; i < len(locLat); i++ {

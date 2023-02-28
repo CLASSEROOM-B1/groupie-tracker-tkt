@@ -45,7 +45,7 @@
     var loc = "{{.}}"
     const locLat = loc.split(' ');
     
-    for (var i = 0; i < locLat.length; i++) {
+    for (var i = 0; i < locLat.length; i+=2) {
         var e = parseFloat(locLat[i])
         var f = parseFloat(locLat[i+1])
         var marker = L.marker([e, f]).addTo(map_init).bindPopup("[Date]");

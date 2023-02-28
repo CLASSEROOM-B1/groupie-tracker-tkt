@@ -25,8 +25,13 @@ type Variable struct { //structure pour le hangman
 	choix  int
 }
 
+type Liste struct {
+	Simple groupie.DetailSimple
+	Detail groupie.Detail
+}
+
 func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimple *groupie.DetailSimple) { //page d'acceuil
-	template, err := template.ParseFiles("./index.html", "templates/forms.html")
+	template, err := template.ParseFiles("./index.html", "./templates/header.html", "templates/forms.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,8 +55,6 @@ func AllArtise(w http.ResponseWriter, r *http.Request, Variable *Variable, Detai
 }
 
 func Map(w http.ResponseWriter, r *http.Request, Variable *Variable, loc string) { //page d'acceuil
-
-	fmt.Println(loc)
 
 	templ, err := template.ParseFiles("./pages/map.html")
 	if err != nil {
@@ -146,6 +149,7 @@ func main() { // fonction main
 	var Variable *Variable = new(Variable)
 	var DetailLocation *DetailLocation = new(DetailLocation)
 	var Date *Date = new(Date)
+	// var Liste *Liste = new(Liste)
 
 	Detail := groupie.AllARtiste()
 	DetailSimple := groupie.Api(Variable.Entrer, 0, 0)
@@ -157,6 +161,9 @@ func main() { // fonction main
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
 		DetailSimple, DetailLocation, choix = User(w, r, Variable, &Detail, DetailLocation, Date, DetailSimple)
+		// DetailSimple := groupie.Api(Variable.Entrer, 0, 0)
+		// Detail, DetailSimple, choix2 = ImageArtiste(w, r, Variable, Detail, DetailLocation, Date, DetailSimple, lenDetail)
+
 		if choix == 1 {
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
