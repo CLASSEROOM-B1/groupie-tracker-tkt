@@ -23,7 +23,7 @@ type Geometry struct {
 	Lng float32
 }
 
-func Cord(location []string) string {
+func Cord(location []string, date []string) string {
 
 	var DataLoc []Data
 
@@ -55,6 +55,8 @@ func Cord(location []string) string {
 		loc += fmt.Sprintf("%f", locLat[i])
 		loc += " "
 		loc += fmt.Sprintf("%f", locLng[i])
+		loc += " "
+		loc += date[i]
 		loc += " "
 	}
 

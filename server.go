@@ -47,7 +47,7 @@ func Artiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailS
 }
 
 func AllArtise(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail) { //page d'acceuil
-	template, err := template.ParseFiles("./pages/AllArtiste.html", "templates/test.html")
+	template, err := template.ParseFiles("./pages/AllArtiste.html", "./templates/header.html", "templates/test.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,7 +56,7 @@ func AllArtise(w http.ResponseWriter, r *http.Request, Variable *Variable, Detai
 
 func Map(w http.ResponseWriter, r *http.Request, Variable *Variable, loc string) { //page d'acceuil
 
-	templ, err := template.ParseFiles("./pages/map.html")
+	templ, err := template.ParseFiles("./pages/map.html", "./templates/header.html")
 	if err != nil {
 		fmt.Println("Error = ", err)
 	}
@@ -184,14 +184,12 @@ func main() { // fonction main
 	})
 
 	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
-		loc = groupie.Cord(DetailLocation.Locations)
+		loc = groupie.Cord(DetailLocation.Locations, Date.Dates)
 		Map(w, r, Variable, loc)
 
 	})
 
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	fi := http.FileServer(http.Dir("./hangman/assets/"))
-	http.Handle("/hangman/assets/", http.StripPrefix("/hangman/assets/", fi))
 	http.ListenAndServe(":8000", nil)
 }

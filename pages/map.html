@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-
+    {{template "header".}}
     <div id="map"></div>
     
 </body>
@@ -45,10 +45,11 @@
     var loc = "{{.}}"
     const locLat = loc.split(' ');
     
-    for (var i = 0; i < locLat.length; i+=2) {
+    for (var i = 0; i < locLat.length; i+=3) {
         var e = parseFloat(locLat[i])
         var f = parseFloat(locLat[i+1])
-        var marker = L.marker([e, f]).addTo(map_init).bindPopup("[Date]");
+        var g = locLat[i+2]
+        var marker = L.marker([e, f]).addTo(map_init).bindPopup(g);
     }
 
     var Basemaps = {
