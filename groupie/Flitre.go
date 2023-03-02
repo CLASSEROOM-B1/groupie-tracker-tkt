@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func Filtre(Detail []Detail, DetailFull []Detail, DetailTest []Detail, member int, date int, album int) []Detail {
+func Filtre(Detail []Detail, Vide *Vide, DetailFull []Detail, DetailTest []Detail, member int, date int, album int, europe string, ameriquen string, ameriques string, afrique string, asie string, oceanie string) []Detail {
 
 	if member > 0 {
 		if date > 1900 {
@@ -126,6 +126,17 @@ func Filtre(Detail []Detail, DetailFull []Detail, DetailTest []Detail, member in
 		//fmt.Println(Detail)
 		fmt.Println(len(DetailTest))
 		DetailFull = DetailTest
+	}
+
+	if europe != "" {
+		for i := 0; i < len(Vide.Index); i++ {
+			fmt.Println(Vide.Index[i].Locations)
+			for y := 0; y < len(Vide.Index[i].Locations); y++ {
+				if Vide.Index[i].Locations[y] == "Europe" {
+					fmt.Println((Detail)[i].Name)
+				}
+			}
+		}
 	}
 	return DetailFull
 }

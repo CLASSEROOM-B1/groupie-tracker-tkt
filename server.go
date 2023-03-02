@@ -1,60 +1,59 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"groupie/groupie"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 	"text/template"
 )
 
-type DetailLocation struct {
-	Id        int      `json:"id"`
-	Locations []string `json:"location"`
+type Donne struct {
+	Detail []groupie.Detail
+
+	DetailLocation *groupie.Vide
+
+	DetailDate *groupie.Index
+
+	DetailSimple *groupie.DetailSimple
+
+	DetailFull []groupie.Detail
+
+	Choix     int
+	Choix2    int
+	LenDetail int
+	ApiOn     int
 }
 
-type Date struct {
-	Id    int      `json:"id"`
-	Dates []string `json:"dates"`
-}
-
-type Variable struct { //structure pour le hangman
-	Entrer string
-	image  int
-	choix  int
-}
-
-type Liste struct {
-	Simple groupie.DetailSimple
-	Detail groupie.Detail
-}
-
-func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimple *groupie.DetailSimple) { //page d'acceuil
+func Home(w http.ResponseWriter, r *http.Request) { //page d'acceuil
 	template, err := template.ParseFiles("./index.html", "./templates/header.html", "templates/forms.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	template.Execute(w, DetailSimple)
+	template.Execute(w, nil)
 }
 
-func Artiste(w http.ResponseWriter, r *http.Request, Variable *Variable, DetailSimple *groupie.DetailSimple) { //page d'acceuil
+func Artiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'acceuil
 	template, err := template.ParseFiles("./pages/artiste.html", "templates/seul.html", "templates/basdepage.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	template.Execute(w, DetailSimple)
+	template.Execute(w, Donne.DetailSimple)
 }
 
-func AllArtise(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail) { //page d'acceuil
+func AllArtise(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'acceuil
 	template, err := template.ParseFiles("./pages/AllArtiste.html", "./templates/header.html", "templates/test.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	template.Execute(w, Detail)
+	template.Execute(w, Donne.DetailFull)
 }
 
-func Map(w http.ResponseWriter, r *http.Request, Variable *Variable, loc string) { //page d'acceuil
+func Map(w http.ResponseWriter, r *http.Request, loc string) { //page d'acceuil
 
 	templ, err := template.ParseFiles("./pages/map.html", "./templates/header.html")
 	if err != nil {
@@ -66,46 +65,63 @@ func Map(w http.ResponseWriter, r *http.Request, Variable *Variable, loc string)
 	}
 }
 
-func User(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail *[]groupie.Detail, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple) (groupie.DetailSimple, *DetailLocation, int) { // page de l'entrée utilisateur
+func User(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'entrée utilisateur
 	tmpl := template.Must(template.ParseFiles("./templates/forms.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, nil)
 	}
-	choix := 0
-	a := r.FormValue("entrer")
 
-	if len(a) > 0 {
-		Variable.Entrer = a
-		DetailSimple = groupie.Api(a, 0, 0)
-		choix = 1
+	userInput := r.FormValue("entrer")
 
-		tempLocation := groupie.ApiLocation(DetailSimple.Id)
+	if len(userInput) > 0 {
 
-		DetailLocation.Id = tempLocation.Id
-		DetailLocation.Locations = tempLocation.Locations
+		id := 0
 
-		tempDate := groupie.ApiDate(DetailSimple.Id)
+		userInput = strings.ToLower(userInput)
 
-		Date.Id = tempDate.Id
-		Date.Dates = tempDate.Dates
+		for _, val := range Donne.Detail {
+			if strings.ToLower(val.Name) == userInput {
+				id = val.Id
+			}
+		}
+
+		userInput = ""
+
+		for x := 0; x < len(Donne.Detail); x++ {
+			if id == Donne.Detail[x].Id {
+				Donne.DetailSimple.Id = Donne.Detail[x].Id
+				Donne.DetailSimple.Image = Donne.Detail[x].Image
+				Donne.DetailSimple.Name = Donne.Detail[x].Name
+				Donne.DetailSimple.Members = Donne.Detail[x].Members
+				Donne.DetailSimple.CreationDate = Donne.Detail[x].CreationDate
+				Donne.DetailSimple.FirstAlbum = Donne.Detail[x].FirstAlbum
+				if Donne.ApiOn == 1 {
+					Donne.DetailSimple.Locations = Donne.DetailLocation.Index[x].Locations
+					Donne.DetailSimple.Dates = Donne.DetailDate.Index[x].Dates
+				}
+
+				x = len(Donne.Detail)
+
+				Donne.Choix = 1
+			}
+		}
 
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
-
-	return DetailSimple, DetailLocation, choix
-
 }
 
-func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, Detail []groupie.Detail, DetailLocation *DetailLocation, Date *Date, DetailSimple groupie.DetailSimple, lenDetail int) ([]groupie.Detail, groupie.DetailSimple, int) { // page de l'entrée utilisateur
+func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'entrée utilisateur
 	tmpl := template.Must(template.ParseFiles("./templates/test.html"))
-	b := 0
+
+	id := 0
+
+	Donne.Choix2 = 0
+
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, nil)
 	}
 
-	Detail = groupie.AllARtiste()
-
-	DetailFull := Detail
+	Donne.DetailFull = Donne.Detail
 	var DetailTest []groupie.Detail
 
 	memberString := r.FormValue("member")
@@ -117,79 +133,121 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Variable *Variable, De
 	albumString := r.FormValue("album")
 	album, _ := strconv.Atoi(albumString)
 
-	DetailFull = groupie.Filtre(Detail, DetailFull, DetailTest, member, date, album)
+	europe := r.FormValue("europe")
 
-	choix := 0
-	a := r.FormValue("artisteImage")
-	b, _ = strconv.Atoi(a)
+	ameriquen := r.FormValue("ameriquen")
 
-	if b > 0 {
-		Variable.image = b
-		DetailSimple = groupie.Api(a, 1, b)
-		choix = 1
-		b = 0
+	ameriques := r.FormValue("ameriques")
 
-		tempLocation := groupie.ApiLocation(DetailSimple.Id)
+	afrique := r.FormValue("afrique")
 
-		DetailLocation.Id = tempLocation.Id
-		DetailLocation.Locations = tempLocation.Locations
+	asie := r.FormValue("asie")
 
-		tempDate := groupie.ApiDate(DetailSimple.Id)
+	oceanie := r.FormValue("oceanie")
 
-		Date.Id = tempDate.Id
-		Date.Dates = tempDate.Dates
+	Donne.DetailFull = groupie.Filtre(Donne.Detail, Donne.DetailLocation, Donne.DetailFull, DetailTest, member, date, album, europe, ameriquen, ameriques, afrique, asie, oceanie)
+
+	idStr := r.FormValue("artisteImage")
+	id, _ = strconv.Atoi(idStr)
+
+	if id > 0 {
+
+		for x := 0; x < len(Donne.Detail); x++ {
+			if id == Donne.Detail[x].Id {
+				Donne.DetailSimple.Id = Donne.Detail[x].Id
+				Donne.DetailSimple.Image = Donne.Detail[x].Image
+				Donne.DetailSimple.Name = Donne.Detail[x].Name
+				Donne.DetailSimple.Members = Donne.Detail[x].Members
+				Donne.DetailSimple.CreationDate = Donne.Detail[x].CreationDate
+				Donne.DetailSimple.FirstAlbum = Donne.Detail[x].FirstAlbum
+				if Donne.ApiOn == 1 {
+					Donne.DetailSimple.Locations = Donne.DetailLocation.Index[x].Locations
+					Donne.DetailSimple.Dates = Donne.DetailDate.Index[x].Dates
+				}
+				Donne.Choix2 = 1
+
+				x = len(Donne.Detail)
+			}
+		}
+
+		id = 0
 
 	}
 	tmpl.Execute(w, struct{ Success bool }{true})
-
-	return DetailFull, DetailSimple, choix
 }
 
 func main() { // fonction main
-	var Variable *Variable = new(Variable)
-	var DetailLocation *DetailLocation = new(DetailLocation)
-	var Date *Date = new(Date)
-	// var Liste *Liste = new(Liste)
+	var Donne *Donne = new(Donne)
 
-	Detail := groupie.AllARtiste()
-	DetailSimple := groupie.Api(Variable.Entrer, 0, 0)
-	choix := 0
-	choix2 := 0
-	lenDetail := len(Detail)
+	Start(Donne)
 
 	var loc string
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-		DetailSimple, DetailLocation, choix = User(w, r, Variable, &Detail, DetailLocation, Date, DetailSimple)
-		// DetailSimple := groupie.Api(Variable.Entrer, 0, 0)
-		// Detail, DetailSimple, choix2 = ImageArtiste(w, r, Variable, Detail, DetailLocation, Date, DetailSimple, lenDetail)
-
-		if choix == 1 {
+		Donne.Choix = 0
+		User(w, r, Donne)
+		if Donne.Choix == 1 {
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
-		Home(w, r, Variable, &DetailSimple)
+		Home(w, r)
 	})
 
 	http.HandleFunc("/AllArtiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-		Detail, DetailSimple, choix2 = ImageArtiste(w, r, Variable, Detail, DetailLocation, Date, DetailSimple, lenDetail)
-		if choix2 == 1 {
+		Donne.Choix2 = 0
+		ImageArtiste(w, r, Donne)
+		if Donne.Choix2 == 1 {
 			http.Redirect(w, r, "/artiste", http.StatusSeeOther)
 		}
-		AllArtise(w, r, Variable, &Detail)
+		AllArtise(w, r, Donne)
 	})
 
 	http.HandleFunc("/artiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
-		Artiste(w, r, Variable, &DetailSimple)
+		Artiste(w, r, Donne)
 
 	})
 
 	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
-		loc = groupie.Cord(DetailLocation.Locations, Date.Dates)
-		Map(w, r, Variable, loc)
+		loc = groupie.Cord(Donne.DetailSimple)
+		Map(w, r, loc)
 
 	})
 
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.ListenAndServe(":8000", nil)
+}
+
+func Start(Donne *Donne) {
+
+	Donne.Detail = groupie.AllARtiste()
+	Donne.DetailSimple = groupie.Setup()
+	Donne.DetailDate = groupie.Dt()
+
+	Donne.Choix = 0
+	Donne.Choix2 = 0
+	Donne.LenDetail = len(Donne.Detail)
+
+	x := 0
+	var entree string
+	for x < 1 {
+		fmt.Print("0 sans api, 1 avec api : ")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		entree = scanner.Text()
+		if len(entree) < 1 {
+			fmt.Println("ecrit quelque chose")
+		} else {
+			a, _ := strconv.Atoi(entree)
+			if a == 1 {
+				Donne.DetailLocation = groupie.Tab()
+				Donne.ApiOn = 1
+				x = 1
+			} else {
+				Donne.ApiOn = 0
+				x = 1
+			}
+		}
+	}
+
+	fmt.Println("Pret")
 }

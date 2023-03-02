@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-type index struct {
+type Index struct {
 	Index []Date
 }
 
@@ -21,7 +21,7 @@ type Date struct {
 func ApiDate(a int) *Date {
 
 	var Detailss *Date = new(Date)
-	var vide *index = new(index)
+	var vide *Index = new(Index)
 
 	url, err := http.Get("https://groupietrackers.herokuapp.com/api/dates")
 	if err != nil {
@@ -38,7 +38,25 @@ func ApiDate(a int) *Date {
 	return (Detailss)
 }
 
-func SearchDate(vide *index, Detailss *Date, id int) {
+func Dt() *Index {
+
+	var vide *Index = new(Index)
+
+	url, err := http.Get("https://groupietrackers.herokuapp.com/api/dates")
+	if err != nil {
+		os.Exit(1)
+	}
+	Arstiste_json, err := ioutil.ReadAll(url.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	json.Unmarshal(Arstiste_json, vide)
+
+	return vide
+
+}
+
+func SearchDate(vide *Index, Detailss *Date, id int) {
 
 	id_string := strconv.Itoa(id)
 

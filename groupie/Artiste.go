@@ -17,7 +17,39 @@ type Detail struct {
 	FirstAlbum   string   `json:"firstAlbum"`
 }
 
+type DetailSimple struct {
+	Id           int
+	Image        string
+	Name         string
+	Members      []string
+	CreationDate int
+	FirstAlbum   string
+	Locations    []string
+	Dates        []string
+}
+
+func Setup() *DetailSimple {
+
+	var DetailSimple *DetailSimple = new(DetailSimple)
+
+	var zString []string
+	zString = append(zString, "0")
+
+	DetailSimple.Id = 0
+	DetailSimple.Image = "0"
+	DetailSimple.Name = "0"
+	DetailSimple.Members = zString
+	DetailSimple.CreationDate = 0
+	DetailSimple.FirstAlbum = "0"
+	DetailSimple.Locations = zString
+	DetailSimple.Dates = zString
+
+	return DetailSimple
+}
+
 func AllARtiste() []Detail {
+
+	var m []Detail
 
 	url, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
@@ -28,9 +60,9 @@ func AllARtiste() []Detail {
 		log.Fatal(err)
 	}
 
-	var m []Detail
 	if err := json.Unmarshal([]byte(Arstiste_json), &m); err != nil {
 		panic(err)
 	}
+
 	return m
 }
