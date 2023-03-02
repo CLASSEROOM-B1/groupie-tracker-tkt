@@ -45,7 +45,7 @@ func Cord(DetailSimple *DetailSimple) string {
 
 	for i := 0; i < len(location); i++ {
 		split := strings.Split(location[i], "-")
-		var test string = "https://api.opencagedata.com/geocode/v1/json?q=" + split[0] + "&key=735c71b1c2694ef383ee59af8349e696"
+		var test string = "https://api.opencagedata.com/geocode/v1/json?q=" + split[0] + "&key=0b047418c1354dd09363c328775a3ad2"
 		url, err := http.Get(test)
 		if err != nil {
 			os.Exit(1)

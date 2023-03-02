@@ -221,7 +221,7 @@ func Start(Donne *Donne) {
 
 	Donne.Detail = groupie.AllARtiste()
 	Donne.DetailSimple = groupie.Setup()
-	Donne.DetailDate = groupie.Dt()
+	Donne.DetailDate = groupie.ApiDate()
 
 	Donne.Choix = 0
 	Donne.Choix2 = 0
@@ -230,7 +230,7 @@ func Start(Donne *Donne) {
 	x := 0
 	var entree string
 	for x < 1 {
-		fmt.Print("0 sans api, 1 avec api : ")
+		fmt.Print("0 sans api, 1 avec api, 2 api lente : ")
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		entree = scanner.Text()
@@ -239,8 +239,12 @@ func Start(Donne *Donne) {
 		} else {
 			a, _ := strconv.Atoi(entree)
 			if a == 1 {
-				Donne.DetailLocation = groupie.Tab()
 				Donne.ApiOn = 1
+				Donne.DetailLocation = groupie.ApiLocation(Donne.ApiOn)
+				x = 1
+			} else if a == 2 {
+				Donne.ApiOn = 2
+				Donne.DetailLocation = groupie.ApiLocation(Donne.ApiOn)
 				x = 1
 			} else {
 				Donne.ApiOn = 0
