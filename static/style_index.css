@@ -12,13 +12,21 @@
     width: 100vw;
 }
 
-#divbutton {
+.divbutton {
     display: flex;
     width: 100vw;
     justify-content: center;
     margin-top: 10vh;
 }
 
+#divbutton2 {
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    margin-top: 10vh;
+    visibility: hidden;
+    
+}
 
 
 input{
@@ -44,7 +52,23 @@ a{
     color: #161A1D;
 }
 
+#button2 {
+    background-color: #ffff;
+    width: 0px;
+    justify-content: center;
+    align-items: center;
+    height: 0px;
+    border-radius: 30px;
+    transition: 0.25s;
+    font-size: 0vh;
+    color: #161A1D;
+}
+
 #button:hover{
+    color:gray;
+}
+
+#button2:hover{
     color:gray;
 }
 

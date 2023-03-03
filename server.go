@@ -41,11 +41,11 @@ type Variable struct { //structure pour le hangman
 }
 
 func Home(w http.ResponseWriter, r *http.Request, Variable *Variable, Artiste *Artiste) { //page d'acceuil
-	template, err := template.ParseFiles("./index.html", "templates/test.html", "templates/forms.html")
+	template, err := template.ParseFiles("./index.html", "templates/forms.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	template.Execute(w, Artiste)
+	template.Execute(w, nil)
 }
 
 func api(Artiste *Artiste, Variable *Variable) {
@@ -87,7 +87,5 @@ func main() { // fonction main
 	})
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	fi := http.FileServer(http.Dir("./hangman/assets/"))
-	http.Handle("/hangman/assets/", http.StripPrefix("/hangman/assets/", fi))
 	http.ListenAndServe(":8000", nil)
 }
