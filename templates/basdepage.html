@@ -1,6 +1,14 @@
 {{define "Basdepage"}}
     <a class="nom">{{.Name}}<br></a>
-    <span>Membres :<a class="membres">{{.Members}}</a></span>
-    <span>Création :<br><a class="creationDate">{{.CreationDate}}<br></a></span>
-    <span>Premier album :<br><a class="premierAlbum">{{.FirstAlbum}}<br></a></span></div>
+    <div class="statBox">
+        <div class="membresBox">
+            <span class="taillebox"><h2><div class="marge">Membres :</div></h2><a class="membres">{{.Members}}</a></span>
+        </div>
+        <div class="creationBox">
+            <span class="taillebox"><h2><div class="marge">Création :</div></h2><a class="creationDate">{{.CreationDate}}</a></span>
+        </div>
+        <div class="premierAlbumBox">
+            <span class="taillebox"><h2><div class="margeAlbum">Premier album :</div></h2><a class="premierAlbum">{{.FirstAlbum}}</a></span>
+        </div>
+    </div>
 {{end}}
