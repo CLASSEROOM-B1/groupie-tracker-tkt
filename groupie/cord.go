@@ -74,6 +74,8 @@ func Cord(DetailSimple *DetailSimple) string {
 
 func Cont(location []string) []int {
 
+	var DataLoc []Data
+
 	var Data *Data = new(Data)
 
 	var conti []int
@@ -92,18 +94,18 @@ func Cont(location []string) []int {
 
 		json.Unmarshal(Arstiste_json, Data)
 
-		if Data.Results[0].Components.Continent == "Europe" {
+		DataLoc = append(DataLoc, *Data)
+
+		if DataLoc[i].Results[0].Components.Continent == "Europe" {
 			conti = append(conti, 1)
-		} else if Data.Results[0].Components.Continent == "Asia" {
+		} else if DataLoc[i].Results[0].Components.Continent == "Asia" {
 			conti = append(conti, 2)
-		} else if Data.Results[0].Components.Continent == "North America" {
+		} else if DataLoc[i].Results[0].Components.Continent == "North America" || DataLoc[i].Results[0].Components.Continent == "South America" {
 			conti = append(conti, 3)
-		} else if Data.Results[0].Components.Continent == "South America" {
+		} else if DataLoc[i].Results[0].Components.Continent == "Africa" {
 			conti = append(conti, 4)
-		} else if Data.Results[0].Components.Continent == "Africa" {
+		} else if DataLoc[i].Results[0].Components.Continent == "Oceania" {
 			conti = append(conti, 5)
-		} else if Data.Results[0].Components.Continent == "Oceania" {
-			conti = append(conti, 6)
 		}
 	}
 

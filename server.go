@@ -30,7 +30,7 @@ type Donne struct {
 }
 
 func Home(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-	template, err := template.ParseFiles("./index.html", "./templates/header.html", "templates/forms.html")
+	template, err := template.ParseFiles("./index.html", "templates/forms.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -117,10 +117,6 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // pag
 
 	Donne.Choix2 = 0
 
-	if r.Method != http.MethodPost {
-		tmpl.Execute(w, nil)
-	}
-
 	Donne.DetailFull = Donne.Detail
 	var DetailTest []groupie.Detail
 
@@ -133,11 +129,12 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // pag
 	albumString := r.FormValue("album")
 	album, _ := strconv.Atoi(albumString)
 
+	idStr := r.FormValue("artisteImage")
+	id, _ = strconv.Atoi(idStr)
+
 	europe := r.FormValue("europe")
 
-	ameriquen := r.FormValue("ameriquen")
-
-	ameriques := r.FormValue("ameriques")
+	amerique := r.FormValue("amerique")
 
 	afrique := r.FormValue("afrique")
 
@@ -145,10 +142,12 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // pag
 
 	oceanie := r.FormValue("oceanie")
 
-	Donne.DetailFull = groupie.Filtre(Donne.Detail, Donne.DetailLocation, Donne.DetailFull, DetailTest, member, date, album, europe, ameriquen, ameriques, afrique, asie, oceanie)
+	fmt.Println(member)
+	fmt.Println(date)
+	fmt.Println(album)
+	fmt.Println(europe)
 
-	idStr := r.FormValue("artisteImage")
-	id, _ = strconv.Atoi(idStr)
+	Donne.DetailFull = groupie.Filtre(Donne.Detail, Donne.DetailLocation, Donne.DetailFull, DetailTest, member, date, album, europe, amerique, afrique, asie, oceanie)
 
 	if id > 0 {
 

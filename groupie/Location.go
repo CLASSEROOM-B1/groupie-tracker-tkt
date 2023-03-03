@@ -37,7 +37,8 @@ func ApiLocation(Api int) *Vide {
 
 	if Api == 2 {
 
-		for i := 0; i < len(vide.Index); i++ {
+		// for i := 0; i < len(vide.Index); i++ {
+		for i := 0; i < 3; i++ {
 			vide.Index[i].Continent = Cont(vide.Index[i].Locations)
 
 			fmt.Println(i + 1)
