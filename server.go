@@ -30,7 +30,7 @@ type Donne struct {
 }
 
 func Home(w http.ResponseWriter, r *http.Request) { //page d'acceuil
-	template, err := template.ParseFiles("./index.html", "templates/forms.html")
+	template, err := template.ParseFiles("./pages/index.html", "templates/forms.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -141,11 +141,6 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // pag
 	asie := r.FormValue("asie")
 
 	oceanie := r.FormValue("oceanie")
-
-	fmt.Println(member)
-	fmt.Println(date)
-	fmt.Println(album)
-	fmt.Println(europe)
 
 	Donne.DetailFull = groupie.Filtre(Donne.Detail, Donne.DetailLocation, Donne.DetailFull, DetailTest, member, date, album, europe, amerique, afrique, asie, oceanie)
 
