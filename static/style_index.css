@@ -29,6 +29,25 @@ a{
     color: white;
 }
 
+#button2 {
+    background-color: #ffff;
+    width: 0px;
+    justify-content: center;
+    align-items: center;
+    height: 0px;
+    border-radius: 30px;
+    transition: 0.25s;
+    font-size: 0vh;
+    color: #161A1D;
+}
+#divbutton2 {
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    margin-top: 10vh;
+    visibility: hidden;
+
+}
 
 #button {
     background-color: #ffff;

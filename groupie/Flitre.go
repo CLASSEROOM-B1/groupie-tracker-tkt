@@ -19,7 +19,11 @@ func Filtre(Detail []Detail, Vide *Vide, DetailFull []Detail, DetailTest []Detai
 	DetailTest, first = FilterAsia(Detail, DetailTest, Temp, Vide, asie, first)
 	DetailTest, first = FilterOceania(Detail, DetailTest, Temp, Vide, oceanie, first)
 
-	DetailFull = DetailTest
+	if len(DetailTest) > 0 {
+		DetailFull = DetailTest
+	} else {
+		DetailFull = Detail
+	}
 
 	return DetailFull
 }
