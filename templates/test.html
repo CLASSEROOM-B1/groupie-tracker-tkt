@@ -48,15 +48,24 @@
                 </form>
     </fieldset>
 </div>    
-<div class ="all">
+<div class ="Grille">
 
-        <ol>
+        <ol class="uwu">
                 {{range .}}
-                        <li>{{.Name}}</li>
-                        <form method="POST">
-                                <input type="hidden" value={{.Id}} name="artisteImage">
-                                <input type="image" src={{.Image}} name="artisteTest">
-                        </form>
+                <div class="Capsule">
+
+                        <div class="CapsuleName">
+                                <li>{{.Name}}</li>
+                        </div>
+
+                        <div class="CapsuleImage">
+                                <form method="POST" class="image">
+                                        <input type="hidden" value={{.Id}} name="artisteImage" class="image">
+                                        <input type="image" src={{.Image}} name="artisteTest">
+                                </form>
+                        </div>
+
+                </div>
                  {{end}}
         </ol>
 
