@@ -98,7 +98,7 @@ func User(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'e
 				Donne.DetailSimple.Members = Donne.Detail[x].Members
 				Donne.DetailSimple.CreationDate = Donne.Detail[x].CreationDate
 				Donne.DetailSimple.FirstAlbum = Donne.Detail[x].FirstAlbum
-				if Donne.ApiOn == 1 {
+				if Donne.ApiOn == 1 || Donne.ApiOn == 2 {
 					Donne.DetailSimple.Locations = Donne.DetailLocation.Index[x].Locations
 					Donne.DetailSimple.Dates = Donne.DetailDate.Index[x].Dates
 				}
@@ -157,7 +157,7 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // fil
 				Donne.DetailSimple.Members = Donne.Detail[x].Members
 				Donne.DetailSimple.CreationDate = Donne.Detail[x].CreationDate
 				Donne.DetailSimple.FirstAlbum = Donne.Detail[x].FirstAlbum
-				if Donne.ApiOn == 1 {
+				if Donne.ApiOn == 1 || Donne.ApiOn == 2 {
 					Donne.DetailSimple.Locations = Donne.DetailLocation.Index[x].Locations
 					Donne.DetailSimple.Dates = Donne.DetailDate.Index[x].Dates
 				}
