@@ -18,14 +18,15 @@ type Detail struct {
 }
 
 type DetailSimple struct {
-	Id           int
-	Image        string
-	Name         string
-	Members      []string
-	CreationDate int
-	FirstAlbum   string
-	Locations    []string
-	Dates        []string
+	Id            int
+	Image         string
+	Name          string
+	Members       []string
+	CreationDate  int
+	FirstAlbum    string
+	Locations     []string
+	Dates         []string
+	MembersFormat string
 }
 
 func Setup() *DetailSimple {
@@ -65,4 +66,28 @@ func AllARtiste() []Detail {
 	}
 
 	return m
+}
+
+func Format(DetailSimple *DetailSimple) *DetailSimple {
+
+	var zString []string
+	zString = append(zString, "0")
+
+	DetailSimple.MembersFormat = ""
+
+	for i := 0; i < len(DetailSimple.Members); i++ {
+
+		if i == len(DetailSimple.Members)-1 {
+			DetailSimple.MembersFormat = DetailSimple.MembersFormat + DetailSimple.Members[i]
+		} else {
+			DetailSimple.MembersFormat = DetailSimple.MembersFormat + DetailSimple.Members[i] + ", "
+		}
+	}
+
+	if DetailSimple.MembersFormat == "" {
+		DetailSimple.MembersFormat = "0"
+	}
+
+	return DetailSimple
+
 }

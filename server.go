@@ -38,6 +38,9 @@ func Home(w http.ResponseWriter, r *http.Request) { //page d'acceuil
 }
 
 func Artiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'acceuil
+
+	Donne.DetailSimple = groupie.Format(Donne.DetailSimple)
+
 	template, err := template.ParseFiles("./pages/artiste.html", "templates/seul.html", "templates/basdepage.html")
 	if err != nil {
 		log.Fatal(err)

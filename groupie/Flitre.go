@@ -133,17 +133,22 @@ func FilterEurope(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vid
 			}
 
 			return DetailTest, first
+
 		} else {
 			if europe != "" {
 				for i := 0; i < len(Vide.Index); i++ {
 					for y := 0; y < len(Vide.Index[i].Continent); y++ {
 						if Vide.Index[i].Continent[y] == 1 {
-							Temp = append(Temp, (Detail)[i])
-							xd = 1
-							break
-						}
-						if xd == 1 {
-							break
+							for z := 0; z < len(DetailTest); z++ {
+								if Vide.Index[i].Id == DetailTest[z].Id {
+									Temp = append(Temp, (Detail)[i])
+									xd = 1
+									break
+								}
+							}
+							if xd == 1 {
+								break
+							}
 						}
 					}
 				}
@@ -175,17 +180,22 @@ func FilterAsia(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide,
 			}
 
 			return DetailTest, first
+
 		} else {
 			if asie != "" {
 				for i := 0; i < len(Vide.Index); i++ {
 					for y := 0; y < len(Vide.Index[i].Continent); y++ {
 						if Vide.Index[i].Continent[y] == 2 {
-							Temp = append(Temp, (Detail)[i])
-							xd = 1
-							break
-						}
-						if xd == 1 {
-							break
+							for z := 0; z < len(DetailTest); z++ {
+								if Vide.Index[i].Id == DetailTest[z].Id {
+									Temp = append(Temp, (Detail)[i])
+									xd = 1
+									break
+								}
+							}
+							if xd == 1 {
+								break
+							}
 						}
 					}
 				}
@@ -217,17 +227,22 @@ func FilterAmerica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vi
 			}
 
 			return DetailTest, first
+
 		} else {
 			if amerique != "" {
 				for i := 0; i < len(Vide.Index); i++ {
 					for y := 0; y < len(Vide.Index[i].Continent); y++ {
 						if Vide.Index[i].Continent[y] == 3 {
-							Temp = append(Temp, (Detail)[i])
-							xd = 1
-							break
-						}
-						if xd == 1 {
-							break
+							for z := 0; z < len(DetailTest); z++ {
+								if Vide.Index[i].Id == DetailTest[z].Id {
+									Temp = append(Temp, (Detail)[i])
+									xd = 1
+									break
+								}
+							}
+							if xd == 1 {
+								break
+							}
 						}
 					}
 				}
@@ -259,17 +274,22 @@ func FilterAfrica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vid
 			}
 
 			return DetailTest, first
+
 		} else {
 			if afrique != "" {
 				for i := 0; i < len(Vide.Index); i++ {
 					for y := 0; y < len(Vide.Index[i].Continent); y++ {
 						if Vide.Index[i].Continent[y] == 4 {
-							Temp = append(Temp, (Detail)[i])
-							xd = 1
-							break
-						}
-						if xd == 1 {
-							break
+							for z := 0; z < len(DetailTest); z++ {
+								if Vide.Index[i].Id == DetailTest[z].Id {
+									Temp = append(Temp, (Detail)[i])
+									xd = 1
+									break
+								}
+							}
+							if xd == 1 {
+								break
+							}
 						}
 					}
 				}
@@ -289,7 +309,7 @@ func FilterOceania(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vi
 		if first == 0 {
 			for i := 0; i < len(Vide.Index); i++ {
 				for y := 0; y < len(Vide.Index[i].Continent); y++ {
-					if Vide.Index[i].Continent[y] == 5 {
+					if Vide.Index[i].Continent[y] == 2 {
 						DetailTest = append(DetailTest, (Detail)[i])
 						xd = 1
 						break
@@ -301,17 +321,22 @@ func FilterOceania(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vi
 			}
 
 			return DetailTest, first
+
 		} else {
 			if oceanie != "" {
 				for i := 0; i < len(Vide.Index); i++ {
 					for y := 0; y < len(Vide.Index[i].Continent); y++ {
-						if Vide.Index[i].Continent[y] == 5 {
-							Temp = append(Temp, (Detail)[i])
-							xd = 1
-							break
-						}
-						if xd == 1 {
-							break
+						if Vide.Index[i].Continent[y] == 2 {
+							for z := 0; z < len(DetailTest); z++ {
+								if Vide.Index[i].Id == DetailTest[z].Id {
+									Temp = append(Temp, (Detail)[i])
+									xd = 1
+									break
+								}
+							}
+							if xd == 1 {
+								break
+							}
 						}
 					}
 				}
