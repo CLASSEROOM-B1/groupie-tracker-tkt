@@ -10,6 +10,8 @@ func Filtre(Detail []Detail, Vide *Vide, DetailFull []Detail, DetailTest []Detai
 
 	first := 0
 
+	// filtre tout
+
 	DetailTest, first = FilterMember(Detail, DetailTest, Temp, member, first)
 	DetailTest, first = FilterDate(Detail, DetailTest, Temp, date, first)
 	DetailTest, first = FilterAlbum(Detail, DetailTest, Temp, album, first)
@@ -28,7 +30,7 @@ func Filtre(Detail []Detail, Vide *Vide, DetailFull []Detail, DetailTest []Detai
 	return DetailFull
 }
 
-func FilterMember(Detail []Detail, DetailTest []Detail, Temp []Detail, member int, first int) ([]Detail, int) {
+func FilterMember(Detail []Detail, DetailTest []Detail, Temp []Detail, member int, first int) ([]Detail, int) { // filtre les artiste par nombre de membre
 
 	if member > 0 {
 		if first == 0 {
@@ -53,7 +55,7 @@ func FilterMember(Detail []Detail, DetailTest []Detail, Temp []Detail, member in
 	return DetailTest, first
 }
 
-func FilterDate(Detail []Detail, DetailTest []Detail, Temp []Detail, date int, first int) ([]Detail, int) {
+func FilterDate(Detail []Detail, DetailTest []Detail, Temp []Detail, date int, first int) ([]Detail, int) { // filtre les artiste par date de creation
 
 	if date > 1901 {
 		if first == 0 {
@@ -81,7 +83,7 @@ func FilterDate(Detail []Detail, DetailTest []Detail, Temp []Detail, date int, f
 	return DetailTest, first
 }
 
-func FilterAlbum(Detail []Detail, DetailTest []Detail, Temp []Detail, album int, first int) ([]Detail, int) {
+func FilterAlbum(Detail []Detail, DetailTest []Detail, Temp []Detail, album int, first int) ([]Detail, int) { // filtre les artiste par nombre d'album
 
 	if album > 1901 {
 		if first == 0 {
@@ -113,7 +115,7 @@ func FilterAlbum(Detail []Detail, DetailTest []Detail, Temp []Detail, album int,
 	return DetailTest, first
 }
 
-func FilterEurope(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, europe string, first int) ([]Detail, int) {
+func FilterEurope(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, europe string, first int) ([]Detail, int) { // filtre les artiste par continent
 
 	xd := 0
 
@@ -160,7 +162,7 @@ func FilterEurope(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vid
 	return DetailTest, first
 }
 
-func FilterAsia(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, asie string, first int) ([]Detail, int) {
+func FilterAsia(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, asie string, first int) ([]Detail, int) { // filtre les artiste par continent
 
 	xd := 0
 
@@ -207,7 +209,7 @@ func FilterAsia(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide,
 	return DetailTest, first
 }
 
-func FilterAmerica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, amerique string, first int) ([]Detail, int) {
+func FilterAmerica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, amerique string, first int) ([]Detail, int) { // filtre les artiste par continent
 
 	xd := 0
 
@@ -254,7 +256,7 @@ func FilterAmerica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vi
 	return DetailTest, first
 }
 
-func FilterAfrica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, afrique string, first int) ([]Detail, int) {
+func FilterAfrica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, afrique string, first int) ([]Detail, int) { // filtre les artiste par continent
 
 	xd := 0
 
@@ -301,7 +303,7 @@ func FilterAfrica(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vid
 	return DetailTest, first
 }
 
-func FilterOceania(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, oceanie string, first int) ([]Detail, int) {
+func FilterOceania(Detail []Detail, DetailTest []Detail, Temp []Detail, Vide *Vide, oceanie string, first int) ([]Detail, int) { // filtre les artiste par continent
 
 	xd := 0
 

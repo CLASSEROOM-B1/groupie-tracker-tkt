@@ -28,7 +28,7 @@ type Geometry struct {
 	Lng float32
 }
 
-func Cord(DetailSimple *DetailSimple) string {
+func Cord(DetailSimple *DetailSimple) string { // recupere les coordonner des concerts
 
 	location := DetailSimple.Locations
 
@@ -72,7 +72,7 @@ func Cord(DetailSimple *DetailSimple) string {
 	return loc
 }
 
-func Cont(location []string) []int {
+func Cont(location []string) []int { // recupere les continent des concerts
 
 	var DataLoc []Data
 

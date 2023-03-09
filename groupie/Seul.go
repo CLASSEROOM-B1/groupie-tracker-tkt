@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func Api(a string, choix int, id int) DetailSimple {
+func Api(a string, choix int, id int) DetailSimple { // recupere les details des artistes
 
 	var DetailSimple *DetailSimple = new(DetailSimple)
 
@@ -37,7 +37,7 @@ func Api(a string, choix int, id int) DetailSimple {
 	return *DetailSimple
 }
 
-func Recherche(userInput string, m []Detail, DetailSimple *DetailSimple) {
+func Recherche(userInput string, m []Detail, DetailSimple *DetailSimple) { // recherche un artiste
 
 	id := 0
 	boucle := false
@@ -72,7 +72,7 @@ func Recherche(userInput string, m []Detail, DetailSimple *DetailSimple) {
 
 }
 
-func RechercheImage(id int, m []Detail, DetailSimple *DetailSimple) {
+func RechercheImage(id int, m []Detail, DetailSimple *DetailSimple) { // recherche l'image d'un artiste
 
 	id_string := strconv.Itoa(id)
 

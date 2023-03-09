@@ -19,7 +19,7 @@ type DetailLocation struct {
 	Continent []int
 }
 
-func ApiLocation(Api int) *Vide {
+func ApiLocation(Api int) *Vide { // recupere les locations des concerts
 
 	var vide *Vide = new(Vide)
 

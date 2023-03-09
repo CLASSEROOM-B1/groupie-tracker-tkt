@@ -255,3 +255,9 @@ body {
    .submit {
    margin-left: 220%;
    }
+
+   *{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Poppins', sans-serif;
+}

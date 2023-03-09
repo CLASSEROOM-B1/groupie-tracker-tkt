@@ -29,7 +29,7 @@ type DetailSimple struct {
 	MembersFormat string
 }
 
-func Setup() *DetailSimple {
+func Setup() *DetailSimple { // setup les variable pour la page artiste
 
 	var DetailSimple *DetailSimple = new(DetailSimple)
 
@@ -48,7 +48,7 @@ func Setup() *DetailSimple {
 	return DetailSimple
 }
 
-func AllARtiste() []Detail {
+func AllARtiste() []Detail { // recupere tout les artistes
 
 	var m []Detail
 
@@ -68,7 +68,7 @@ func AllARtiste() []Detail {
 	return m
 }
 
-func Format(DetailSimple *DetailSimple) *DetailSimple {
+func Format(DetailSimple *DetailSimple) *DetailSimple { // format les donnée pour la page artiste
 
 	var zString []string
 	zString = append(zString, "0")

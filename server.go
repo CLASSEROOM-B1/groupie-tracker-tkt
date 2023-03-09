@@ -12,7 +12,7 @@ import (
 	"text/template"
 )
 
-type Donne struct {
+type Donne struct { // structure contenant les données
 	Detail []groupie.Detail
 
 	DetailLocation *groupie.Vide
@@ -37,7 +37,7 @@ func Home(w http.ResponseWriter, r *http.Request) { //page d'acceuil
 	template.Execute(w, nil)
 }
 
-func Artiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'acceuil
+func Artiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page artiste
 
 	Donne.DetailSimple = groupie.Format(Donne.DetailSimple)
 
@@ -48,7 +48,7 @@ func Artiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'ac
 	template.Execute(w, Donne.DetailSimple)
 }
 
-func AllArtise(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'acceuil
+func AllArtise(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page avec tout les artiste
 	template, err := template.ParseFiles("./pages/AllArtiste.html", "./templates/header.html", "templates/test.html")
 	if err != nil {
 		log.Fatal(err)
@@ -56,7 +56,7 @@ func AllArtise(w http.ResponseWriter, r *http.Request, Donne *Donne) { //page d'
 	template.Execute(w, Donne.DetailFull)
 }
 
-func Map(w http.ResponseWriter, r *http.Request, loc string) { //page d'acceuil
+func Map(w http.ResponseWriter, r *http.Request, loc string) { //page avec la map
 
 	templ, err := template.ParseFiles("./pages/map.html", "./templates/header.html")
 	if err != nil {
@@ -82,7 +82,7 @@ func User(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'e
 
 		userInput = strings.ToLower(userInput)
 
-		for _, val := range Donne.Detail {
+		for _, val := range Donne.Detail { // trouver l'id de l'artiste
 			if strings.ToLower(val.Name) == userInput {
 				id = val.Id
 			}
@@ -90,7 +90,7 @@ func User(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'e
 
 		userInput = ""
 
-		for x := 0; x < len(Donne.Detail); x++ {
+		for x := 0; x < len(Donne.Detail); x++ { // metre les valeur dans la structure
 			if id == Donne.Detail[x].Id {
 				Donne.DetailSimple.Id = Donne.Detail[x].Id
 				Donne.DetailSimple.Image = Donne.Detail[x].Image
@@ -113,7 +113,7 @@ func User(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'e
 	tmpl.Execute(w, struct{ Success bool }{true})
 }
 
-func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // page de l'entrée utilisateur
+func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // filtre
 	tmpl := template.Must(template.ParseFiles("./templates/test.html"))
 
 	id := 0
@@ -145,11 +145,11 @@ func ImageArtiste(w http.ResponseWriter, r *http.Request, Donne *Donne) { // pag
 
 	oceanie := r.FormValue("oceanie")
 
-	Donne.DetailFull = groupie.Filtre(Donne.Detail, Donne.DetailLocation, Donne.DetailFull, DetailTest, member, date, album, europe, amerique, afrique, asie, oceanie)
+	Donne.DetailFull = groupie.Filtre(Donne.Detail, Donne.DetailLocation, Donne.DetailFull, DetailTest, member, date, album, europe, amerique, afrique, asie, oceanie) // filtre les artiste
 
 	if id > 0 {
 
-		for x := 0; x < len(Donne.Detail); x++ {
+		for x := 0; x < len(Donne.Detail); x++ { // si image cliquer afficher les info de l'artiste
 			if id == Donne.Detail[x].Id {
 				Donne.DetailSimple.Id = Donne.Detail[x].Id
 				Donne.DetailSimple.Image = Donne.Detail[x].Image
@@ -189,7 +189,7 @@ func main() { // fonction main
 		Home(w, r)
 	})
 
-	http.HandleFunc("/AllArtiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceuil
+	http.HandleFunc("/AllArtiste", func(w http.ResponseWriter, r *http.Request) { //page avec tout les artiste
 		Donne.Choix2 = 0
 		ImageArtiste(w, r, Donne)
 		if Donne.Choix2 == 1 {
@@ -198,12 +198,12 @@ func main() { // fonction main
 		AllArtise(w, r, Donne)
 	})
 
-	http.HandleFunc("/artiste", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
+	http.HandleFunc("/artiste", func(w http.ResponseWriter, r *http.Request) { //page avec un artiste
 		Artiste(w, r, Donne)
 
 	})
 
-	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) { //page d'acceu
+	http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) { //page avec la map
 		loc = groupie.Cord(Donne.DetailSimple)
 		Map(w, r, loc)
 
@@ -214,7 +214,7 @@ func main() { // fonction main
 	http.ListenAndServe(":8000", nil)
 }
 
-func Start(Donne *Donne) {
+func Start(Donne *Donne) { // fonction qui demarre le programme et initialise les variable et les structure
 
 	Donne.Detail = groupie.AllARtiste()
 	Donne.DetailSimple = groupie.Setup()

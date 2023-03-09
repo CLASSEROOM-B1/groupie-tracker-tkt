@@ -17,7 +17,7 @@ type Date struct {
 	Dates []string `json:"dates"`
 }
 
-func ApiDate() *Index {
+func ApiDate() *Index { // recupere les dates des concerts
 
 	var vide *Index = new(Index)
 
